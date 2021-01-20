@@ -14,11 +14,11 @@ struct ContentView: View {
     
     var searchBar : some View{
         HStack{
-            TextField("Enter Your Task", text: $NewTodo)
+            TextField("Enter Your Task", text: $NewTodo).border(Color.gray, width: 1).cornerRadius(3)
             Button(action: self.addNewToDo, label: {
-                Text("Add New")
-            })
-        }
+                Text("Add New").border(Color.gray, width: 1).foregroundColor(.white)
+            }).background(Color.black).cornerRadius(5)
+        }.background(Color.yellow)
     }
     func addNewToDo(){
         taskStore.tasks.append(Task(id: String(taskStore.tasks.count + 1), toDoItem: NewTodo))
@@ -30,8 +30,8 @@ struct ContentView: View {
                 List{
                     ForEach(self.taskStore.tasks){task in
                         Text(task.toDoItem)}.onMove(perform: self.Move).onDelete(perform:self.delete)
-                }.navigationBarTitle("Add Tasks").navigationBarItems(trailing: EditButton())
-            }
+                }.background(Color.pink).border(Color.gray, width: 1).navigationBarTitle("Add Tasks").navigationBarItems(trailing: EditButton()).foregroundColor(.black)
+            }.background(Color.green)
         }
     }
     
@@ -47,6 +47,8 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        Group {
+            ContentView()
+        }
     }
 }
