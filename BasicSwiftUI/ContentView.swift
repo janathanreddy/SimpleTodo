@@ -7,11 +7,14 @@
 
 import SwiftUI
 import Combine
+import Firebase
 
 struct ContentView: View {
     @ObservedObject var taskStore = TaskStore()
     @State var NewTodo:String = ""
+    var db = Firestore.firestore()
     
+   
     var searchBar : some View{
         HStack{
             TextField("Enter Your Task", text: $NewTodo).border(Color.gray, width: 1).cornerRadius(3)
@@ -22,6 +25,7 @@ struct ContentView: View {
     }
     func addNewToDo(){
         taskStore.tasks.append(Task(id: String(taskStore.tasks.count + 1), toDoItem: NewTodo))
+        db.collection("ToDoSwiftUI").document().setData(["Task_Data":NewTodo])
     }
     var body: some View {
         NavigationView{
@@ -37,12 +41,12 @@ struct ContentView: View {
     
     func Move(from source : IndexSet,to destination: Int){
         taskStore.tasks.move(fromOffsets: source, toOffset: destination)
-        print(IndexSet.self,Int.self)
+        print(source.self,destination.self)
     }
     func delete(at offsets : IndexSet){
         taskStore.tasks.remove(atOffsets: offsets)
-        
     }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
